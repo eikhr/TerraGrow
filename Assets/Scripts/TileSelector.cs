@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class TileSelector : MonoBehaviour
@@ -16,24 +14,20 @@ public class TileSelector : MonoBehaviour
     
     void ChooseTile(int x, int y)
     {
-        if (x > _grid.size - 1 || x < 0 || y > _grid.size - 1 || y < 0)
+        HexTile selectedTile = _grid.GetHexTile(x, y);
+        if (selectedTile != null)
         {
-            return;
+            UnchooseTile(selectedX, selectedY);
+            selectedX = x;
+            selectedY = y;
+            selectedTile.Select();
         }
-        HexTile selectedTile = _grid.hexTiles[x, y];
-        if (selectedTile == null)
-        {
-            return;
-        }
-        UnchooseTile(selectedX, selectedY);
-        selectedX = x;
-        selectedY = y;
-        selectedTile.Select();
+       
     }   
     
     void UnchooseTile(int x, int y)
     {
-        HexTile selectedTile = _grid.hexTiles[x, y];
+        HexTile selectedTile = _grid.GetHexTile(x, y);
         if (selectedTile != null)
         {
             selectedTile.Unselect();
