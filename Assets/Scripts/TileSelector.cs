@@ -14,6 +14,8 @@ public class TileSelector : MonoBehaviour
 
     private HexGrid _grid;
 
+    private GameStateManager _gameStateManager;
+
     void Start()
     {
         _grid = GetComponent<HexGrid>();
@@ -103,6 +105,8 @@ public class TileSelector : MonoBehaviour
             Debug.Log(_grid.hexTiles[selectedX, selectedY].tileType);
 
             _grid.SetTile(selectedX, selectedY, selectedTileType);
+
+            _gameStateManager.EndTurn();
         }
         else
         {

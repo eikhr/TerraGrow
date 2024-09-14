@@ -55,4 +55,8 @@ public class CameraController : MonoBehaviour
     {
         targetCamera.transform.LookAt(position);
     }
+
+    public void DebugSomeShit() {
+        Debug.Log("SOmeshiet");
+    }
 }

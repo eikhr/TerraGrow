@@ -7,27 +7,45 @@ public class GameStateManager : MonoBehaviour
     public int turn = 0;
     public int playerScore = 0;
     public int nextGoodieBagScore = 2;
+
+    private CameraController _cameraController;
+
+    void Start()
+    {
+        _cameraController = FindObjectOfType<CameraController>();
+
+        _cameraController.DebugSomeShit();
+    }
+
+    void Update()
+    {
+
+    }
     
-    void endTurn()
+    public void EndTurn()
     {
         turn++;
         updateScore();
         levelUpTiles();
         tryGiveGoodieBag();
+        Debug.Log("End of turn " + turn);
     }
     
-    void updateScore()
+    public void updateScore()
     {
         playerScore += 1;
         //TODO Implement
+
+        //On Z button press, giveGoodieBag();
+        
     }
     
-    void levelUpTiles()
+    public void levelUpTiles()
     {
         //TODO Implement
     }
     
-    void tryGiveGoodieBag()
+    public void tryGiveGoodieBag()
     {
         if (playerScore >= nextGoodieBagScore)
         {
