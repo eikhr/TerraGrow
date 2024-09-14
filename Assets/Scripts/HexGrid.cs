@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class HexGrid : MonoBehaviour
@@ -74,8 +75,24 @@ public class HexGrid : MonoBehaviour
         if (hex != null)
         {
             hex.Initialize(x, y);
+            newTile.transform.position = hexTiles[x, y].transform.position;
         }
-        Destroy(hexTiles[x, y].gameObject);
+        StartCoroutine(ReplaceTileTransition(hexTiles[x, y].gameObject, newTile));
         hexTiles[x, y] = hex;
+    }
+    
+    private IEnumerator ReplaceTileTransition(GameObject oldTile, GameObject newTile)
+    {
+        // Flip over the tiles
+        for (float t = 0; t <= 1f; t += Time.deltaTime * 1.3f)
+        {
+            // Rotate along the x-axis
+            oldTile.transform.rotation = Quaternion.Lerp(Quaternion.identity, new Quaternion(1, 0, 0, 0), t );
+            newTile.transform.rotation = Quaternion.Lerp(new Quaternion(-1, 0, 0, 0), Quaternion.identity, t);
+            yield return null;
+        }
+
+        // Destroy the old tile
+        Destroy(oldTile);
     }
 }
