@@ -1,9 +1,14 @@
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 public class TileSelector : MonoBehaviour
 {
     public int selectedX = 3;
     public int selectedY = 0;
+
+    public float cameraShiftDuration = 0.15f; // Duration of the animation when shifting the camera between tiles
 
     public HexTile.TileType selectedTileType = HexTile.TileType.Mountain;
 
@@ -44,11 +49,28 @@ public class TileSelector : MonoBehaviour
         Camera targetCamera = Camera.main;
         // Look at tile, while maintaining the same angle
 
-        
-        targetCamera.transform.Translate(difference, Space.World);
+         StartCoroutine(AnimateCameraShift(targetCamera.transform.position + difference, targetCamera));
+
        
-    }   
-    
+       
+    } 
+
+    private IEnumerator AnimateCameraShift(Vector3 targetPosition, Camera camera)
+    {
+        Vector3 startPosition = camera.transform.position;
+        float duration = cameraShiftDuration; 
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            camera.transform.position = Vector3.Lerp(startPosition, targetPosition, elapsed / duration);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        camera.transform.position = targetPosition; // Ensure the final position is set
+    }
+
     void UnchooseTile(int x, int y)
     {
         HexTile selectedTile = _grid.GetHexTile(x, y);
