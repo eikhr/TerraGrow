@@ -24,9 +24,9 @@ public class CameraController : MonoBehaviour
             return;
         }
 
-        // Movement with W, A, S, D or arrow keys
-        float horizontal = Input.GetAxis("Horizontal");  // A, D or Left/Right Arrow
-        float vertical = Input.GetAxis("Vertical");  // W, S or Up/Down Arrow
+        // Movement with arrow keys
+        float horizontal = Input.GetKey(KeyCode.LeftArrow) ? -1 : Input.GetKey(KeyCode.RightArrow) ? 1 : 0;
+        float vertical = Input.GetKey(KeyCode.UpArrow) ? 1 : Input.GetKey(KeyCode.DownArrow) ? -1 : 0;
 
         Vector3 move = new Vector3(horizontal, 0, vertical);
         targetCamera.transform.Translate(move * moveSpeed * Time.deltaTime, Space.Self);
