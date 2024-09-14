@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using UnityEngine;
 
 public class HexTile : MonoBehaviour
@@ -10,11 +10,13 @@ public class HexTile : MonoBehaviour
         Water, // Lake
         Mountain,
         Forest,
-        Mushroom, // cut trees
+        Mushroom, // cut trees or Swamp
         Flowers,
         Crops,
         Animals,
         Town,
+        Village,
+        Factory
     }
     public int x;  // Grid coordinates
     public int y;

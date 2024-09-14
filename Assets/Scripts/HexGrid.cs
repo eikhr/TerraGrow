@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 public class HexGrid : MonoBehaviour
 {
@@ -28,7 +28,7 @@ public class HexGrid : MonoBehaviour
 
     void CreateHexTile(int x, int y)
     {
-        GameObject hexTile = Instantiate(hexTilePrefabs[Random.Range(0,2)], Vector3.zero, Quaternion.identity);
+        GameObject hexTile = Instantiate(hexTilePrefabs[Random.Range(0, hexTilePrefabs.Length)], Vector3.zero, Quaternion.identity);
         hexTile.transform.SetParent(transform); // Parent it to the grid for organization
         
         HexTile hex = hexTile.GetComponent<HexTile>();
@@ -37,5 +37,22 @@ public class HexGrid : MonoBehaviour
             hex.Initialize(x, y);
         }
         hexTiles[x, y] = hex;
+    }
+
+    public void SetTile(int x, int y, HexTile.TileType tileType) {
+        GameObject hexTile = Instantiate(hexTilePrefabs[(int)tileType], Vector3.zero, Quaternion.identity);
+        hexTile.transform.SetParent(transform); // Parent it to the grid for organization
+
+        HexTile hex = hexTile.GetComponent<HexTile>();
+        if (hex != null)
+        {
+            hex.Initialize(x, y);
+        }
+        
+        // Destroy the old tile
+        Destroy(hexTiles[x, y].gameObject);
+
+        hexTiles[x, y] = hex;
+        
     }
 }
