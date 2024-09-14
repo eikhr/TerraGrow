@@ -45,4 +45,14 @@ public class CameraController : MonoBehaviour
             targetCamera.transform.Rotate(Vector3.right, -rotationY, Space.Self);
         }
     }
+
+    public void SetCameraPosition(Vector3 position)
+    {
+        targetCamera.transform.position = position;
+    }
+
+    public void LookAt(Vector3 position)
+    {
+        targetCamera.transform.LookAt(position);
+    }
 }
