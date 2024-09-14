@@ -7,20 +7,20 @@ public class TileSelector : MonoBehaviour
     public int selectedX = 3;
     public int selectedY = 0;
 
-    private HexGridGenerator _generator;
+    private HexGrid _grid;
     
     void Start()
     {
-        _generator = GetComponent<HexGridGenerator>();
+        _grid = GetComponent<HexGrid>();
     }
     
     void ChooseTile(int x, int y)
     {
-        if (x > _generator.size - 1 || x < 0 || y > _generator.size - 1 || y < 0)
+        if (x > _grid.size - 1 || x < 0 || y > _grid.size - 1 || y < 0)
         {
             return;
         }
-        HexTile selectedTile = _generator.hexTiles[x, y];
+        HexTile selectedTile = _grid.hexTiles[x, y];
         if (selectedTile == null)
         {
             return;
@@ -33,7 +33,7 @@ public class TileSelector : MonoBehaviour
     
     void UnchooseTile(int x, int y)
     {
-        HexTile selectedTile = _generator.hexTiles[x, y];
+        HexTile selectedTile = _grid.hexTiles[x, y];
         if (selectedTile != null)
         {
             selectedTile.Unselect();

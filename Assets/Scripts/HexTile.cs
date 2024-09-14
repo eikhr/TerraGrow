@@ -3,8 +3,37 @@ using UnityEngine;
 
 public class HexTile : MonoBehaviour
 {
+    const int DEFAULT_TIMER = 4;  
+    public enum TileType
+    {
+        Grass, // Default, no special properties
+        Water, // Lake
+        Mountain,
+        Forest,
+        Mushroom, // cut trees
+        Flowers,
+        Crops,
+        Animals,
+        Town,
+    }
     public int x;  // Grid coordinates
     public int y;
+    
+    public int basePointRewards = 1;
+    
+    public TileType tileType;
+    public int tileLevel = 1; 
+    public GameObject nextLevelPrefab;
+    
+    public int turnsUntilLevelUp = DEFAULT_TIMER;
+    public int wantsWater = 0;
+    public int wantsMinerals = 0;
+    public int wantsShade = 0;
+    public int wantsSunlight = 0;
+    public int givesWater = 0;
+    public int givesMinerals = 0;
+    public int givesShade = 0;
+    public int givesSunlight = 0;
 
     public Vector3 Position => OffsetToWorldPosition(x, y);
 

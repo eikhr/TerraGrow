@@ -205,3 +205,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   x: 0
   y: 0
+  basePointRewards: 1
+  tileType: 3
+  tileLevel: 1
+  nextLevelPrefab: {fileID: 0}
+  turnsUntilLevelUp: 4
+  wantsWater: 2
+  wantsMinerals: 0
+  wantsShade: 0
+  wantsSunlight: 2
+  givesWater: 0
+  givesMinerals: 0
+  givesShade: 0
+  givesSunlight: 0
