@@ -42,17 +42,40 @@ public class HexGrid : MonoBehaviour
     public void SetTile(int x, int y, HexTile.TileType tileType) {
         GameObject hexTile = Instantiate(hexTilePrefabs[(int)tileType], Vector3.zero, Quaternion.identity);
         hexTile.transform.SetParent(transform); // Parent it to the grid for organization
-
-        HexTile hex = hexTile.GetComponent<HexTile>();
+        
+        // Destroy the old tile
+        ReplaceTile(x, y, hexTile);
+    }
+    
+    public HexTile GetHexTile(int x, int y)
+    {
+        if (x < 0 || x >= size || y < 0 || y >= size)
+        {
+            return null;
+        }
+        return hexTiles[x, y];
+    }
+    
+    public HexTile[] GetNeighbours(int x, int y)
+    {
+        HexTile[] neighbours = new HexTile[6];
+        neighbours[0] = GetHexTile(x - 1, y + 1); // North West
+        neighbours[1] = GetHexTile(x, y + 1); // North East
+        neighbours[2] = GetHexTile(x - 1, y); // West
+        neighbours[3] = GetHexTile(x + 1, y); // East
+        neighbours[4] = GetHexTile(x, y - 1); // South West
+        neighbours[5] = GetHexTile(x + 1, y - 1); // South East
+        return neighbours;
+    }
+    
+    public void ReplaceTile(int x, int y, GameObject newTile)
+    {
+        var hex = newTile.GetComponent<HexTile>();
         if (hex != null)
         {
             hex.Initialize(x, y);
         }
-        
-        // Destroy the old tile
         Destroy(hexTiles[x, y].gameObject);
-
         hexTiles[x, y] = hex;
-        
     }
 }

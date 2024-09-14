@@ -1,4 +1,7 @@
+using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class HexTile : MonoBehaviour
@@ -10,13 +13,20 @@ public class HexTile : MonoBehaviour
         Water, // Lake
         Mountain,
         Forest,
-        Mushroom, // cut trees or Swamp
+        Mushroom, // cut trees
         Flowers,
         Crops,
         Animals,
         Town,
         Village,
         Factory
+    }
+    public enum TileResource
+    {
+        Water,
+        Minerals,
+        Shade,
+        Sunlight,
     }
     public int x;  // Grid coordinates
     public int y;
@@ -28,15 +38,9 @@ public class HexTile : MonoBehaviour
     public GameObject nextLevelPrefab;
     
     public int turnsUntilLevelUp = DEFAULT_TIMER;
-    public int wantsWater = 0;
-    public int wantsMinerals = 0;
-    public int wantsShade = 0;
-    public int wantsSunlight = 0;
-    public int givesWater = 0;
-    public int givesMinerals = 0;
-    public int givesShade = 0;
-    public int givesSunlight = 0;
-
+    public Dictionary<TileResource, int> ResourceRequirements = new Dictionary<TileResource, int>();
+    public Dictionary<TileResource, int> ResourceRewards = new Dictionary<TileResource, int>();
+    
     public Vector3 Position => OffsetToWorldPosition(x, y);
 
     // Convert offset coordinates (x, y) to world position
@@ -82,5 +86,54 @@ public class HexTile : MonoBehaviour
         }
 
         transform.position = targetPosition; // Ensure the final position is set
+    }
+    
+    public HexGrid GetGrid()
+    {
+        return GetComponentInParent<HexGrid>();
+    }
+
+    public bool HasResourcesCovered()
+    {
+        var neighbours = GetGrid().GetNeighbours(x, y);
+        Dictionary<TileResource, int> uncoveredResources = new Dictionary<TileResource, int>();
+        foreach (var resource in ResourceRequirements)
+        {
+            uncoveredResources[resource.Key] = resource.Value;
+        }
+        foreach (var neighbour in neighbours)
+        {
+            if (neighbour != null)
+            {
+                foreach (var resource in ResourceRequirements)
+                {
+                    uncoveredResources[resource.Key] -= neighbour.ResourceRewards[resource.Key];
+                }
+            }
+        }
+        return uncoveredResources.Values.All(value => value <= 0);
+    }
+    
+    public void TakeTurn()
+    {
+        if (HasResourcesCovered())
+        {
+            turnsUntilLevelUp--;
+            if (turnsUntilLevelUp <= 0)
+            {
+                LevelUp();
+            }
+        }
+    }
+
+    public void LevelUp()
+    {
+        if (nextLevelPrefab != null)
+        {
+            GameObject newTile = Instantiate(nextLevelPrefab, transform.position, Quaternion.identity);
+            HexTile newHexTile = newTile.GetComponent<HexTile>();
+            newHexTile.Initialize(x, y);
+            GetGrid().ReplaceTile(x, y, newTile);
+        }
     }
 }
