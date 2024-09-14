@@ -12,10 +12,25 @@ public class TileSelector : MonoBehaviour
     void Start()
     {
         _grid = GetComponent<HexGrid>();
+
+        selectedX = _grid.size / 2;
+        selectedY = _grid.size / 2;
+
+        // Initialize the camera position
+        Camera targetCamera = Camera.main;
+
+        Vector3 offsetFromTile = new Vector3(0, 10, -10);
+
+        HexTile selectedTile = _grid.GetHexTile(selectedX, selectedY);
+        targetCamera.transform.position = selectedTile.Position + offsetFromTile;
+
+
     }
 
+
     void ChooseTile(int x, int y)
-    {
+    { 
+        HexTile oldTile = _grid.GetHexTile(selectedX, selectedY);
         HexTile selectedTile = _grid.GetHexTile(x, y);
         if (selectedTile != null)
         {
@@ -24,6 +39,13 @@ public class TileSelector : MonoBehaviour
             selectedY = y;
             selectedTile.Select();
         }
+    
+        Vector3 difference = selectedTile.Position - oldTile.Position;
+        Camera targetCamera = Camera.main;
+        // Look at tile, while maintaining the same angle
+
+        
+        targetCamera.transform.Translate(difference, Space.World);
        
     }   
     
