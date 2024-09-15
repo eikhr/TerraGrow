@@ -4,14 +4,12 @@ public class TileSelector : MonoBehaviour
 {
     public int selectedX = 3;
     public int selectedY = 0;
-
-    public float cameraShiftDuration = 0.15f; // Duration of the animation when shifting the camera between tiles
-
-    public HexTile.TileType selectedTileType = HexTile.TileType.Mountain;
-
+    
     private HexGrid _grid;
 
     public GameStateManager gameStateManager;
+    
+    private readonly Vector3 _cameraOffset = new Vector3(0, 10, -10);
 
     void Start()
     {
@@ -22,18 +20,16 @@ public class TileSelector : MonoBehaviour
 
         // Initialize the camera position
         Camera targetCamera = Camera.main;
-
-        Vector3 offsetFromTile = new Vector3(0, 10, -10);
-
+        
         HexTile selectedTile = _grid.GetHexTile(selectedX, selectedY);
-        targetCamera.transform.position = selectedTile.Position + offsetFromTile;
-
-
+        targetCamera.transform.position = selectedTile.Position + _cameraOffset;
     }
 
 
     void ChooseTile(int x, int y)
     { 
+        gameStateManager.SelectTile(x, y);
+        
         HexTile selectedTile = _grid.GetHexTile(x, y);
         if (selectedTile == null) return;
         
@@ -43,8 +39,7 @@ public class TileSelector : MonoBehaviour
         selectedTile.Select();
         
         // Find new camera position
-        Vector3 offsetFromTile = new Vector3(0, 10, -10);
-        Vector3 position = selectedTile.Position + offsetFromTile;
+        Vector3 position = selectedTile.Position + _cameraOffset;
         var cameraController = Camera.main?.GetComponent<CameraController>();
         cameraController?.MoveTowards(position);
        
@@ -86,7 +81,6 @@ public class TileSelector : MonoBehaviour
         }
         else
         {
-
             // Currently selecting from 0 to 9
             for (int i = 0; i <= 9; i++)
             {

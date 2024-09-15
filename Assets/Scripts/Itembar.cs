@@ -10,6 +10,8 @@ public class Itembar : MonoBehaviour
     private Canvas canvas; // The dynamically created Canvas
     private int selectedItemIndex = -1;
     private Image[] borderImages; // Border images for highlighting selected item
+    
+    public GameStateManager gameStateManager;
 
     void Start()
     {
@@ -170,6 +172,11 @@ public class Itembar : MonoBehaviour
             {
                 SelectItem(i);
             }
+        }
+    
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            gameStateManager.PlaceTile(prefabs[selectedItemIndex]);
         }
     }
 
