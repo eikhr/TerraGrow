@@ -22,7 +22,11 @@ public class GameStateManager : MonoBehaviour
 
     void Update()
     {
-
+        // End turn on enter key press
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            EndTurn();
+        }
     }
     
     public bool PlaceTile(GameObject tileToSwap)
@@ -83,8 +87,7 @@ public class GameStateManager : MonoBehaviour
                         case HexTile.TileType.Mushroom:
                             // Rule: If adjacent to Forest + Mountain + Water, grow into Big Mushroom
                             if (listHasTiles(neighbours, HexTile.TileType.Forest, 1) &&
-                                listHasTiles(neighbours, HexTile.TileType.Mountain, 1) &&
-                                listHasTiles(neighbours, HexTile.TileType.Water, 1))
+                                listHasTiles(neighbours, HexTile.TileType.Mountain, 1))
                             {
                                 tile.LevelUp(HexTile.TileType.BigMushroom);
                             }
@@ -95,7 +98,7 @@ public class GameStateManager : MonoBehaviour
                             // Rule: If next to Mushroom, downgrade to Grass
                             if (listHasTiles(neighbours, HexTile.TileType.Mushroom, 1))
                             {
-                                tile.LevelUp(HexTile.TileType.Grass);
+                                tile.Die();
                             }
                             // Rule: If adjacent to Village and not adjacent to Mushroom, become Animal Pen
                             else if (listHasTiles(neighbours, HexTile.TileType.Village, 1) &&
@@ -145,9 +148,21 @@ public class GameStateManager : MonoBehaviour
                             // Rule: If not adjacent to Water, become Grass
                             if (!listHasTiles(neighbours, HexTile.TileType.Water, 1))
                             {
-                                tile.LevelUp(HexTile.TileType.Grass);
+                                tile.Die();
                             }
 
+                            break;
+                        
+                        case HexTile.TileType.Trees:
+                            // Rule: If adjacent to two trees or forest, become forest
+                            if (listHasTiles(neighbours, HexTile.TileType.Trees, 2) ||
+                                listHasTiles(neighbours, HexTile.TileType.Forest, 2) ||
+                                listHasTiles(neighbours, HexTile.TileType.Trees, 1) &&
+                                listHasTiles(neighbours, HexTile.TileType.Forest, 1))
+                            {
+                                tile.LevelUp(HexTile.TileType.Forest);
+                            }
+                            
                             break;
 
                         // Add other tile types as needed

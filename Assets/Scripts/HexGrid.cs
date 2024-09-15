@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class HexGrid : MonoBehaviour
 {
-    public GameObject hexTilePrefab; // Prefab for the hex tiles
     public GameObject[] hexTilePrefabs; // Prefabs for the hex tiles
     public int size = 7; // Radius of the hexagonal island
     private HexTile[,] _hexTiles;

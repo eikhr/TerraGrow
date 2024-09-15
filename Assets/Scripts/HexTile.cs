@@ -6,6 +6,8 @@ using UnityEngine;
 public class HexTile : MonoBehaviour
 {
     const int DEFAULT_TIMER = 4;  
+    
+    // do not reorder.
     public enum TileType
     {
         Grass, // Default, no special properties
@@ -37,10 +39,8 @@ public class HexTile : MonoBehaviour
     public int basePointRewards = 1;
     
     public TileType tileType;
-    public int tileLevel = 1; 
     public GameObject nextLevelPrefab;
     
-    public int turnsUntilLevelUp = DEFAULT_TIMER;
     public Dictionary<TileResource, int> ResourceRequirements = new Dictionary<TileResource, int>();
     public Dictionary<TileResource, int> ResourceRewards = new Dictionary<TileResource, int>();
     
@@ -131,6 +131,16 @@ public class HexTile : MonoBehaviour
             newHexTile.tileType = newTileType;
             GetGrid().ReplaceTile(x, y, newTile);
         }
+    }
+
+    public void Die()
+    {
+        GameObject newTilePrefab = GetGrid().hexTilePrefabs[(int)TileType.Grass];
+        GameObject newTile = Instantiate(newTilePrefab, transform.position, Quaternion.identity);
+        HexTile newHexTile = newTile.GetComponent<HexTile>();
+        newHexTile.Initialize(x, y);
+        newHexTile.tileType = TileType.Grass;
+        GetGrid().ReplaceTile(x, y, newTile);
     }
     
 }
