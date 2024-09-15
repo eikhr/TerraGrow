@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public class GameStateManager : MonoBehaviour
@@ -23,10 +24,19 @@ public class GameStateManager : MonoBehaviour
 
     void Update()
     {
-        // End turn on enter key press
+        // End turn every second after enter has been pressed
         if (Input.GetKeyDown(KeyCode.Return))
         {
+            StartCoroutine(EndTurnCoroutine());
+        }
+    }
+    
+    private IEnumerator EndTurnCoroutine()
+    {
+        while (true)
+        {
             EndTurn();
+            yield return new WaitForSeconds(1);
         }
     }
     
