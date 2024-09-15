@@ -13,31 +13,64 @@ public class HexGrid : MonoBehaviour
         _hexTiles = new HexTile[size, size];
         GenerateHexagonalIsland(size);
     }
-
-    void GenerateHexagonalIsland(int size)
+    
+    private void GenerateHexagonalIsland(int size)
     {
         for (int y = 0; y < size; y++)
         {
             int start = Mathf.Max((size - 1) / 2 - y, 0);
-            int end = Mathf.Min(size - ((size - 1) / 2 - (size-y-1)), size);
+            int end = Mathf.Min(size - ((size - 1) / 2 - (size - y - 1)), size);
             for (int x = start; x < end; x++)
             {
-                CreateHexTile(x, y);
+                CreateInitialGrassHexTile(x, y);
+            }
+        }
+        StartCoroutine(GenerateHexagonalIslandCoroutine(size));
+    }
+
+    private IEnumerator GenerateHexagonalIslandCoroutine(int size)
+    {
+        for (int y = 0; y < size; y++)
+        {
+            int start = Mathf.Max((size - 1) / 2 - y, 0);
+            int end = Mathf.Min(size - ((size - 1) / 2 - (size - y - 1)), size);
+            for (int x = start; x < end; x++)
+            {
+                if (CreateRandomHexTile(x, y))
+                {
+                    yield return new WaitForSeconds(0.02f); // Adjust the delay as needed
+                }
             }
         }
     }
-
-    void CreateHexTile(int x, int y)
+    
+    void CreateInitialGrassHexTile(int x, int y)
     {
-        GameObject hexTile = Instantiate(hexTilePrefabs[Random.Range(0, hexTilePrefabs.Length)], Vector3.zero, Quaternion.identity);
+        GameObject hexTile = Instantiate(hexTilePrefabs[(int)HexTile.TileType.Grass], Vector3.zero, Quaternion.identity);
         hexTile.transform.SetParent(transform); // Parent it to the grid for organization
-        
         HexTile hex = hexTile.GetComponent<HexTile>();
-        if (hex != null)
-        {
-            hex.Initialize(x, y);
-        }
+        hex.Initialize(x, y);
         _hexTiles[x, y] = hex;
+    }
+
+    bool CreateRandomHexTile(int x, int y)
+    {
+        // Randomly set the tile type and replace the grass tile
+        var random = Random.Range(0, 100);
+        if (random < 10)
+        {
+            SetTile(x, y, HexTile.TileType.Mountain);
+        }
+        else if (random < 20)
+        {
+            SetTile(x, y, HexTile.TileType.Water);
+        }
+        else
+        {
+            return false;
+        }
+
+        return true;
     }
 
     public void SetTile(int x, int y, HexTile.TileType tileType) {
@@ -76,6 +109,7 @@ public class HexGrid : MonoBehaviour
             hex.Initialize(x, y);
             newTile.transform.position = _hexTiles[x, y].transform.position;
         }
+        
         StartCoroutine(ReplaceTileTransition(_hexTiles[x, y].gameObject, newTile));
         _hexTiles[x, y] = hex;
     }
