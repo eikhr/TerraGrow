@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/BoardGrid.unity
+    guid: 706c6656919ddd843917a42d332354a8
   m_configObjects: {}
