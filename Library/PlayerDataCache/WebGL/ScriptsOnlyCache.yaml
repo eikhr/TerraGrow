@@ -1,0 +1,107 @@
+ScriptsOnlyBuild:
+  usedScripts:
+    Assembly-CSharp.dll:
+    - CameraController
+    - GameStateManager
+    - HexGrid
+    - HexTile
+    - TileSelector
+  serializedClasses: {}
+  methodsToPreserve: []
+  sceneClasses:
+    Assets/Scenes/BoardGrid.unity:
+    - Class: 1
+      Script: {instanceID: 0}
+    - Class: 4
+      Script: {instanceID: 0}
+    - Class: 20
+      Script: {instanceID: 0}
+    - Class: 21
+      Script: {instanceID: 0}
+    - Class: 23
+      Script: {instanceID: 0}
+    - Class: 28
+      Script: {instanceID: 0}
+    - Class: 33
+      Script: {instanceID: 0}
+    - Class: 43
+      Script: {instanceID: 0}
+    - Class: 48
+      Script: {instanceID: 0}
+    - Class: 64
+      Script: {instanceID: 0}
+    - Class: 65
+      Script: {instanceID: 0}
+    - Class: 81
+      Script: {instanceID: 0}
+    - Class: 89
+      Script: {instanceID: 0}
+    - Class: 104
+      Script: {instanceID: 0}
+    - Class: 108
+      Script: {instanceID: 0}
+    - Class: 114
+      Script: {instanceID: 1524}
+    - Class: 114
+      Script: {instanceID: 1526}
+    - Class: 114
+      Script: {instanceID: 1530}
+    - Class: 114
+      Script: {instanceID: 1538}
+    - Class: 114
+      Script: {instanceID: 1540}
+    - Class: 115
+      Script: {instanceID: 0}
+    - Class: 157
+      Script: {instanceID: 0}
+    - Class: 196
+      Script: {instanceID: 0}
+    - Class: 205
+      Script: {instanceID: 0}
+  scriptHashData:
+  - hash:
+      serializedVersion: 2
+      Hash: 4561d9a4533fd89680e6a171e3611848
+    assemblyName: Assembly-CSharp
+    namespaceName: 
+    className: HexTile
+  - hash:
+      serializedVersion: 2
+      Hash: b4caff3ba0d245fea6d3da923d0e2c8a
+    assemblyName: Assembly-CSharp
+    namespaceName: 
+    className: CameraController
+  - hash:
+      serializedVersion: 2
+      Hash: 5ca059d29132d748188c57e5568e93d5
+    assemblyName: Assembly-CSharp
+    namespaceName: 
+    className: GameStateManager
+  - hash:
+      serializedVersion: 2
+      Hash: 422f034e546fa7b60630a596ba5e173b
+    assemblyName: Assembly-CSharp
+    namespaceName: 
+    className: TileSelector
+  - hash:
+      serializedVersion: 2
+      Hash: e02ff4d794fa6827409acced8fd0945a
+    assemblyName: Assembly-CSharp
+    namespaceName: 
+    className: HexGrid
+  - hash:
+      serializedVersion: 2
+      Hash: e47d77dff9f7fd0f54480d10a98b411f
+    assemblyName: Assembly-CSharp
+    namespaceName: 
+    className: GameManager
+  - hash:
+      serializedVersion: 2
+      Hash: d9d8eed08d72e4e9a489d65a8747657d
+    assemblyName: Assembly-CSharp
+    namespaceName: 
+    className: WaveAnimation
+  platform: 20
+  scenePathNames:
+  - Assets/Scenes/BoardGrid.unity
+  playerPath: C:/Users/support/TerraGrow/Build
