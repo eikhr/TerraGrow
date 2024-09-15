@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class GameStateManager : MonoBehaviour
 {
@@ -73,6 +74,7 @@ public class GameStateManager : MonoBehaviour
         // 3 if succeeding the conditions, swap the tile with the upgrade
         
         Debug.Log("Leveling up tiles");
+        Debug.Log("Player score: " + playerScore);
 
         for (int x = 0; x < _hexGrid.size; x++)
         {
@@ -92,6 +94,8 @@ public class GameStateManager : MonoBehaviour
                                 tile.LevelUp(HexTile.TileType.BigMushroom);
                             }
 
+                            playerScore += 30;
+
                             break;
 
                         case HexTile.TileType.Animals:
@@ -99,12 +103,14 @@ public class GameStateManager : MonoBehaviour
                             if (listHasTiles(neighbours, HexTile.TileType.Mushroom, 1))
                             {
                                 tile.Die();
+                                playerScore -= 50;
                             }
                             // Rule: If adjacent to Village and not adjacent to Mushroom, become Animal Pen
                             else if (listHasTiles(neighbours, HexTile.TileType.Village, 1) &&
                                      !listHasTiles(neighbours, HexTile.TileType.Mushroom, 1))
                             {
                                 tile.LevelUp(HexTile.TileType.AnimalPen);
+                                playerScore += 20;
                             }
 
                             break;
@@ -114,12 +120,14 @@ public class GameStateManager : MonoBehaviour
                             if (listHasTiles(neighbours, HexTile.TileType.Forest, 2))
                             {
                                 tile.LevelUp(HexTile.TileType.Forest);
+                                playerScore += 20;
                             }
                             // Rule: If adjacent to Water and Flowers, become Flowers
                             else if (listHasTiles(neighbours, HexTile.TileType.Water, 1) &&
                                      listHasTiles(neighbours, HexTile.TileType.Flowers, 1))
                             {
                                 tile.LevelUp(HexTile.TileType.Flowers);
+                                playerScore += 5;
                             }
                             // Rule: If adjacent to Water and Trees or Forest, become Trees
                             else if (listHasTiles(neighbours, HexTile.TileType.Water, 1) &&
@@ -127,6 +135,7 @@ public class GameStateManager : MonoBehaviour
                                       listHasTiles(neighbours, HexTile.TileType.Forest, 1)))
                             {
                                 tile.LevelUp(HexTile.TileType.Trees);
+                                playerScore += 10;
                             }
                             // Rule: If adjacent to Water, flowers and Animals, become Animals
                             else if (listHasTiles(neighbours, HexTile.TileType.Water, 1) &&
@@ -134,6 +143,7 @@ public class GameStateManager : MonoBehaviour
                                      listHasTiles(neighbours, HexTile.TileType.Animals, 1))
                             {
                                 tile.LevelUp(HexTile.TileType.Animals);
+                                playerScore += 30;
                             }
                             // Rule: If adjacent to (MushroomBig or Mushroom) and (Forest or Mountain), become Mushroom
                             else if ((listHasTiles(neighbours, HexTile.TileType.BigMushroom, 1) ||
@@ -142,6 +152,7 @@ public class GameStateManager : MonoBehaviour
                                       listHasTiles(neighbours, HexTile.TileType.Mountain, 1)))
                             {
                                 tile.LevelUp(HexTile.TileType.Mushroom);
+                                playerScore += 25;
                             }
                             
                             break;
@@ -163,6 +174,7 @@ public class GameStateManager : MonoBehaviour
                                 listHasTiles(neighbours, HexTile.TileType.Mountain, 1))
                             {
                                 tile.LevelUp(HexTile.TileType.Factory);
+                                playerScore += 50;
                             }
                             
                             break;
@@ -172,6 +184,7 @@ public class GameStateManager : MonoBehaviour
                             if (listHasTiles(neighbours, HexTile.TileType.Village, 1))
                             {
                                 tile.LevelUp(HexTile.TileType.Crops);
+                                playerScore += 40;
                             }
 
                             break;
@@ -181,6 +194,7 @@ public class GameStateManager : MonoBehaviour
                             if (!listHasTiles(neighbours, HexTile.TileType.Water, 1))
                             {
                                 tile.Die();
+                                playerScore -= 50;
                             }
 
                             break;
@@ -193,6 +207,7 @@ public class GameStateManager : MonoBehaviour
                                 listHasTiles(neighbours, HexTile.TileType.Forest, 1))
                             {
                                 tile.LevelUp(HexTile.TileType.Forest);
+                                playerScore += 20;
                             }
                             
                             break;
