@@ -162,7 +162,7 @@ public class GameStateManager : MonoBehaviour
         int tileCount = 0;
         foreach (HexTile tile in tiles)
         {
-            if (tile != null && tile.tileType == tileType)
+            if (tile != null && tile.tileType != null && tile.tileType == tileType)
             {
                 tileCount++;
             }

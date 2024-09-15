@@ -74,23 +74,11 @@ public class TileSelector : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.Space))
         {
-            _grid.SetTile(selectedX, selectedY, selectedTileType);
+            HexTile selectedTile = _grid.GetHexTile(selectedX, selectedY);
+            _grid.SetTile(selectedX, selectedY, selectedTile.tileType);
 
             Debug.Log("Space pressed");
             gameStateManager.EndTurn();
-        }
-        else
-        {
-            // Currently selecting from 0 to 9
-            for (int i = 0; i <= 9; i++)
-            {
-                if (Input.GetKeyDown(i.ToString()) && i < HexTile.TileType.GetValues(typeof(HexTile.TileType)).Length)
-                {
-                    selectedTileType = (HexTile.TileType)i;
-                    Debug.Log("Number Pressed: " + i);  // Logs the number pressed
-                    break;
-                }
-            }
         }
     }
 }

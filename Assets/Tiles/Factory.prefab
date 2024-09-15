@@ -206,15 +206,7 @@ MonoBehaviour:
   x: 0
   y: 0
   basePointRewards: 1
-  tileType: 9
+  tileType: 10
   tileLevel: 1
-  nextLevelPrefab: {fileID: 0}
+  nextLevelPrefab: {fileID: 1743851423142728}
   turnsUntilLevelUp: 4
-  wantsWater: 0
-  wantsMinerals: 0
-  wantsShade: 0
-  wantsSunlight: 0
-  givesWater: 0
-  givesMinerals: 0
-  givesShade: 0
-  givesSunlight: 0

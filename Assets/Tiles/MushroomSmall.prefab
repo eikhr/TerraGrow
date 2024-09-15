@@ -129,7 +129,7 @@ MonoBehaviour:
   basePointRewards: 1
   tileType: 4
   tileLevel: 1
-  nextLevelPrefab: {fileID: 0}
+  nextLevelPrefab: {fileID: 1859274740467254, guid: c8c84afaf2d72354097ec664486fe388, type: 3}
   turnsUntilLevelUp: 4
 --- !u!1001 &1970793794042394781
 PrefabInstance:

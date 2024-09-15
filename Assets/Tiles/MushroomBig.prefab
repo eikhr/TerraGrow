@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 33189438362529392}
   - component: {fileID: 23806632591804510}
   - component: {fileID: 64948271280799566}
+  - component: {fileID: -6397962374990673636}
   m_Layer: 0
   m_Name: MushroomBig
   m_TagString: Untagged
@@ -114,6 +115,25 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: ca9e0f6616063104d839cea15011588f, type: 3}
+--- !u!114 &-6397962374990673636
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1859274740467254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2aecef36236c4a03a3deab8b8f47f01c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  x: 0
+  y: 0
+  basePointRewards: 1
+  tileType: 11
+  tileLevel: 1
+  nextLevelPrefab: {fileID: 1859274740467254}
+  turnsUntilLevelUp: 4
 --- !u!1001 &1110109633514724379
 PrefabInstance:
   m_ObjectHideFlags: 0

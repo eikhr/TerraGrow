@@ -11,7 +11,7 @@ public class HexTile : MonoBehaviour
         Grass, // Default, no special properties
         Water, // Lake
         Mountain,
-        Forest,
+        Trees,
         Mushroom, // cut trees
         Flowers,
         Crops,
@@ -21,7 +21,9 @@ public class HexTile : MonoBehaviour
         Factory,
         BigMushroom,
         AnimalPen,
+        Forest,
     }
+    
     public enum TileResource
     {
         Water,

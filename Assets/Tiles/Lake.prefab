@@ -126,11 +126,3 @@ MonoBehaviour:
   tileLevel: 1
   nextLevelPrefab: {fileID: 0}
   turnsUntilLevelUp: 4
-  wantsWater: 0
-  wantsMinerals: 0
-  wantsShade: 0
-  wantsSunlight: 0
-  givesWater: 2
-  givesMinerals: 0
-  givesShade: 0
-  givesSunlight: 0
