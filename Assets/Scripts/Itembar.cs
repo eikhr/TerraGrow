@@ -62,35 +62,57 @@ public class Itembar : MonoBehaviour
     
         // Set the panel's width based on the total width of items and spacing
         float imageSize = 100; // Icon size
-        float spacing = 10;    // Spacing between icons
+        float spacing = -40f;    // Reduced spacing between icons
         int itemCount = prefabs.Length;
         float totalWidth = (imageSize * itemCount) + (spacing * (itemCount - 1));
         panelTransform.sizeDelta = new Vector2(totalWidth, imageSize);
     
         // Create Image UI elements dynamically
         itemImages = new Image[itemCount];
+        borderImages = new Image[itemCount];
         for (int i = 0; i < itemCount; i++)
         {
+            // Create parent GameObject for border
+            GameObject borderObj = new GameObject("ItemBorder" + i);
+            RectTransform borderTransform = borderObj.AddComponent<RectTransform>();
+            borderTransform.SetParent(panelTransform);
+            
+            // Set the size of the border (slightly larger than the image)
+            float borderSize = imageSize - 50f; // Adjust as needed for border thickness
+            borderTransform.sizeDelta = new Vector2(borderSize, borderSize - 20f);
+            
+            // Calculate and set the position
+            float xPosition = (-totalWidth / 2) + (imageSize / 2) + i * (imageSize + spacing);
+            borderTransform.anchoredPosition = new Vector2(xPosition, 0);
+            
+            // Set anchor and pivot to center
+            borderTransform.anchorMin = new Vector2(0.5f, 0.5f);
+            borderTransform.anchorMax = new Vector2(0.5f, 0.5f);
+            borderTransform.pivot = new Vector2(0.5f, 0.5f);
+            
+            // Add Image component to border and set color to transparent initially
+            Image borderImage = borderObj.AddComponent<Image>();
+            borderImage.sprite = Resources.GetBuiltinResource<Sprite>("UI/Skin/UISprite.psd");
+            borderImage.type = Image.Type.Sliced;
+            borderImage.color = Color.clear; // Transparent by default
+            borderImages[i] = borderImage;
+            
+            // Create child GameObject for the item image
             GameObject imageObj = new GameObject("ItemImage" + i);
             itemImages[i] = imageObj.AddComponent<Image>();
             RectTransform imgTransform = imageObj.GetComponent<RectTransform>();
-            imgTransform.SetParent(panelTransform);
+            imgTransform.SetParent(borderTransform);
     
-            // Set the size of the image
+            // Set the size of the image (slightly smaller than border)
             imgTransform.sizeDelta = new Vector2(imageSize, imageSize);
-    
-            // Calculate and set the position
-            float xPosition = (-totalWidth / 2) + (imageSize / 2) + i * (imageSize + spacing);
-            imgTransform.anchoredPosition = new Vector2(xPosition, 0);
+            imgTransform.anchoredPosition = Vector2.zero; // Centered within parent
+            
+            // Set anchor and pivot to center
+            imgTransform.anchorMin = new Vector2(0.5f, 0.5f);
+            imgTransform.anchorMax = new Vector2(0.5f, 0.5f);
+            imgTransform.pivot = new Vector2(0.5f, 0.5f);
         }
     }
-
-
-
-
-
-
-
 
     // Create RenderTextures for each prefab and assign them to the UI
     void CreateRenderTextures()
@@ -105,7 +127,11 @@ public class Itembar : MonoBehaviour
             renderCamera.targetTexture = renderTextures[i];
     
             // Instantiate the prefab and position it
-            GameObject prefabInstance = Instantiate(prefabs[i], renderCamera.transform.position + renderCamera.transform.forward * 5, Quaternion.Euler(-22, 0, 0));
+            // Adjust the position to center the prefab in the thumbnail
+            float yPositionOffset = -0.3f; // Adjust this value as needed
+            Vector3 prefabPosition = renderCamera.transform.position + renderCamera.transform.forward * 5 + Vector3.up * yPositionOffset;
+    
+            GameObject prefabInstance = Instantiate(prefabs[i], prefabPosition, Quaternion.Euler(-22, 0, 0));
             prefabInstance.transform.localScale = Vector3.one * 3.5f; // Adjust as needed
     
             // Render the prefab into the texture
@@ -127,7 +153,6 @@ public class Itembar : MonoBehaviour
     }
 
 
-
     void HandleInput()
     {
         // Map keys Alpha1 to Alpha9 (1-9) and Alpha0 (0) to select items
@@ -147,7 +172,6 @@ public class Itembar : MonoBehaviour
         }
     }
 
-
     void SelectItem(int index)
     {
         if (index >= 0 && index < prefabs.Length)
@@ -162,7 +186,16 @@ public class Itembar : MonoBehaviour
     {
         for (int i = 0; i < itemImages.Length; i++)
         {
-            itemImages[i].color = (i == selectedItemIndex) ? Color.yellow : Color.white;
+            if (i == selectedItemIndex)
+            {
+                // Set border color to white
+                borderImages[i].color = Color.white;
+            }
+            else
+            {
+                // Set border color to transparent
+                borderImages[i].color = Color.clear;
+            }
         }
     }
 }
