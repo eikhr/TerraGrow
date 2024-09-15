@@ -285,7 +285,7 @@ public class Itembar : MonoBehaviour
 
         // Set the size and anchored position of the score text
         scoreTransform.sizeDelta = new Vector2(400, 100);  // Adjust as necessary
-        scoreTransform.anchoredPosition = new Vector2(0, -150);  // Position below the menu bar
+        scoreTransform.anchoredPosition = new Vector2(0, 150);  // Position below the menu bar
 
         // Set anchor and pivot to center
         scoreTransform.anchorMin = new Vector2(0.5f, 0.5f);
@@ -306,6 +306,8 @@ public class Itembar : MonoBehaviour
     void UpdateScore()
     {
         // Update the score text display
+
+        score = gameStateManager.playerScore;
         scoreText.text = "Score: " + score.ToString();
     }
 
