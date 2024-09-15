@@ -4,11 +4,7 @@ public class TileSelector : MonoBehaviour
 {
     public int selectedX = 3;
     public int selectedY = 0;
-
-    public float cameraShiftDuration = 0.15f; // Duration of the animation when shifting the camera between tiles
-
-    public HexTile.TileType selectedTileType = HexTile.TileType.Mountain;
-
+    
     private HexGrid _grid;
 
     public GameStateManager gameStateManager;
@@ -75,20 +71,6 @@ public class TileSelector : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.D))
         {
             ChooseTile(selectedX + 1, selectedY);
-        }
-        else
-        {
-
-            // Currently selecting from 0 to 9
-            for (int i = 0; i <= 9; i++)
-            {
-                if (Input.GetKeyDown(i.ToString()) && i < HexTile.TileType.GetValues(typeof(HexTile.TileType)).Length)
-                {
-                    selectedTileType = (HexTile.TileType)i;
-                    Debug.Log("Number Pressed: " + i);  // Logs the number pressed
-                    break;
-                }
-            }
         }
     }
 }
