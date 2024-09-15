@@ -79,8 +79,6 @@ public class TileSelector : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.Space))
         {
-            Debug.Log(_grid.hexTiles[selectedX, selectedY].tileType);
-
             _grid.SetTile(selectedX, selectedY, selectedTileType);
 
             gameStateManager.EndTurn();

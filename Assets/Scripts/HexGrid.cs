@@ -6,11 +6,11 @@ public class HexGrid : MonoBehaviour
     public GameObject hexTilePrefab; // Prefab for the hex tiles
     public GameObject[] hexTilePrefabs; // Prefabs for the hex tiles
     public int size = 7; // Radius of the hexagonal island
-    public HexTile[,] hexTiles;
+    private HexTile[,] _hexTiles;
 
     void Start()
     {
-        hexTiles = new HexTile[size, size];
+        _hexTiles = new HexTile[size, size];
         GenerateHexagonalIsland(size);
     }
 
@@ -37,7 +37,7 @@ public class HexGrid : MonoBehaviour
         {
             hex.Initialize(x, y);
         }
-        hexTiles[x, y] = hex;
+        _hexTiles[x, y] = hex;
     }
 
     public void SetTile(int x, int y, HexTile.TileType tileType) {
@@ -54,7 +54,7 @@ public class HexGrid : MonoBehaviour
         {
             return null;
         }
-        return hexTiles[x, y];
+        return _hexTiles[x, y];
     }
     
     public HexTile[] GetNeighbours(int x, int y)
@@ -75,10 +75,10 @@ public class HexGrid : MonoBehaviour
         if (hex != null)
         {
             hex.Initialize(x, y);
-            newTile.transform.position = hexTiles[x, y].transform.position;
+            newTile.transform.position = _hexTiles[x, y].transform.position;
         }
-        StartCoroutine(ReplaceTileTransition(hexTiles[x, y].gameObject, newTile));
-        hexTiles[x, y] = hex;
+        StartCoroutine(ReplaceTileTransition(_hexTiles[x, y].gameObject, newTile));
+        _hexTiles[x, y] = hex;
     }
     
     private IEnumerator ReplaceTileTransition(GameObject oldTile, GameObject newTile)
