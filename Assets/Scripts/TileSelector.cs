@@ -58,27 +58,39 @@ public class TileSelector : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.W))
         {
-            ChooseTile(selectedX, selectedY + 1);
+            MoveInDirection(Vector3.forward);
         }
         else if (Input.GetKeyDown(KeyCode.S))
         {
-            ChooseTile(selectedX, selectedY - 1);
+            MoveInDirection(Vector3.back);
         }
         else if (Input.GetKeyDown(KeyCode.A))
         {
-            ChooseTile(selectedX - 1, selectedY);
+            MoveInDirection(Vector3.left);
         }
         else if (Input.GetKeyDown(KeyCode.D))
         {
-            ChooseTile(selectedX + 1, selectedY);
+            MoveInDirection(Vector3.right);
         }
-        else if (Input.GetKeyDown(KeyCode.Space))
-        {
-            HexTile selectedTile = _grid.GetHexTile(selectedX, selectedY);
-            _grid.SetTile(selectedX, selectedY, selectedTile.tileType);
+    }
 
-            Debug.Log("Space pressed");
-            gameStateManager.EndTurn();
-        }
+    void MoveInDirection(Vector3 direction)
+    {
+        Camera mainCamera = Camera.main;
+        if (mainCamera == null) return;
+
+        Vector3 cameraForward = mainCamera.transform.forward;
+        Vector3 cameraRight = mainCamera.transform.right;
+
+        cameraForward.y = 0; // Keep movement in the horizontal plane
+        cameraRight.y = 0;
+
+        Vector3 moveDirection = direction.z * cameraForward + direction.x * cameraRight;
+        moveDirection.Normalize();
+
+        int newX = selectedX + Mathf.RoundToInt(moveDirection.x);
+        int newY = selectedY + Mathf.RoundToInt(moveDirection.z);
+
+        ChooseTile(newX, newY);
     }
 }

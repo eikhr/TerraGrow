@@ -4,8 +4,10 @@ using UnityEngine.UI;
 public class Itembar : MonoBehaviour
 {
     public GameObject[] prefabs;  // The 3D Prefabs to display
+    public int[] prefabNumbers; // Number of each prefab to display
     private RenderTexture[] renderTextures; // Render textures for each prefab
     private Image[] itemImages;  // UI Images in the menu bar
+    private Text[] itemCounts; // Text components for item counts
     private Camera renderCamera; // Camera to render prefab thumbnails
     private Canvas canvas; // The dynamically created Canvas
     private int selectedItemIndex = -1;
@@ -23,6 +25,8 @@ public class Itembar : MonoBehaviour
 
         // Create RenderTextures for each prefab and display them
         CreateRenderTextures();
+        
+        UpdateItemCounts();
     }
 
     void Update()
@@ -40,6 +44,7 @@ public class Itembar : MonoBehaviour
         renderCamera.backgroundColor = Color.clear;
         renderCamera.orthographic = true;
         renderCamera.enabled = false; // Disable as we only use it to render thumbnails
+        renderCamera.transform.position = new Vector3(0, 500, -10); // Position the camera
     }
 
     // Create the Canvas and Image UI elements programmatically
@@ -73,6 +78,7 @@ public class Itembar : MonoBehaviour
         // Create Image UI elements dynamically
         itemImages = new Image[itemCount];
         borderImages = new Image[itemCount];
+        itemCounts = new Text[itemCount];
         for (int i = 0; i < itemCount; i++)
         {
             // Create parent GameObject for border
@@ -114,6 +120,28 @@ public class Itembar : MonoBehaviour
             imgTransform.anchorMin = new Vector2(0.5f, 0.5f);
             imgTransform.anchorMax = new Vector2(0.5f, 0.5f);
             imgTransform.pivot = new Vector2(0.5f, 0.5f);
+            
+            // Create child GameObject for the item count text
+            GameObject textObj = new GameObject("ItemCount" + i);
+            itemCounts[i] = textObj.AddComponent<Text>();
+            RectTransform textTransform = textObj.GetComponent<RectTransform>();
+            textTransform.SetParent(borderTransform);
+
+            // Set the size and position of the text
+            textTransform.sizeDelta = new Vector2(imageSize, 20);
+            textTransform.anchoredPosition = new Vector2(0, -imageSize / 2 - 10); // Below the image
+
+            // Set anchor and pivot to center
+            textTransform.anchorMin = new Vector2(0.5f, 0.5f);
+            textTransform.anchorMax = new Vector2(0.5f, 0.5f);
+            textTransform.pivot = new Vector2(0.5f, 0.5f);
+            textTransform.localPosition = new Vector3(0, -20, 0); // Relative to the camera
+            
+            // Configure the text component
+            itemCounts[i].font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            itemCounts[i].fontSize = 14;
+            itemCounts[i].color = Color.white;
+            itemCounts[i].alignment = TextAnchor.MiddleCenter;
         }
     }
 
@@ -176,8 +204,27 @@ public class Itembar : MonoBehaviour
     
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            gameStateManager.PlaceTile(prefabs[selectedItemIndex]);
+            PlaceTile();
         }
+    }
+
+    void PlaceTile()
+    {
+        if (selectedItemIndex < 0 || selectedItemIndex >= prefabs.Length)
+        {
+            Debug.Log("No item selected!");
+            return;
+        }
+
+        if (prefabNumbers[selectedItemIndex] <= 0)
+        {
+            Debug.Log("No more of this item left!");
+            return;
+        }
+
+        prefabNumbers[selectedItemIndex]--;
+        gameStateManager.PlaceTile(prefabs[selectedItemIndex]);
+        UpdateItemCounts();
     }
 
     void SelectItem(int index)
@@ -206,4 +253,13 @@ public class Itembar : MonoBehaviour
             }
         }
     }
+    
+    void UpdateItemCounts()
+    {
+        for (int i = 0; i < itemCounts.Length; i++)
+        {
+            itemCounts[i].text = prefabNumbers[i].ToString();
+        }
+    }
+
 }
