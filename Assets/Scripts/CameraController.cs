@@ -8,32 +8,40 @@ public class CameraController : MonoBehaviour
     public float scrollSpeed = 1000f;
     public float rotationSpeed = 5f;
 
-    private Camera targetCamera;
+    private Camera _targetCamera;
+    private Vector3 _goalPosition = Vector3.zero;
 
     void Start()
     {
         // Dynamically find the main camera
-        targetCamera = Camera.main;
+        _targetCamera = Camera.main;
     }
 
     void Update()
     {
-        if (targetCamera == null)
+        if (_targetCamera == null)
         {
             Debug.LogError("No camera found.");
             return;
         }
-
+        
+        // Move towards the goal position
+        if (_goalPosition != Vector3.zero)
+        {
+            var distance = Vector3.Distance(_targetCamera.transform.position, _goalPosition);
+            _targetCamera.transform.position = Vector3.MoveTowards(_targetCamera.transform.position, _goalPosition,
+                moveSpeed * Time.deltaTime * distance);
+        }
         // Movement with arrow keys
         float horizontal = Input.GetKey(KeyCode.LeftArrow) ? -1 : Input.GetKey(KeyCode.RightArrow) ? 1 : 0;
         float vertical = Input.GetKey(KeyCode.UpArrow) ? 1 : Input.GetKey(KeyCode.DownArrow) ? -1 : 0;
 
         Vector3 move = new Vector3(horizontal, 0, vertical);
-        targetCamera.transform.Translate(move * moveSpeed * Time.deltaTime, Space.Self);
+        _targetCamera.transform.Translate(move * moveSpeed * Time.deltaTime, Space.Self);
 
         // Zoom with Mouse Scroll Wheel
         float scroll = Input.GetAxis("Mouse ScrollWheel");
-        targetCamera.transform.Translate(Vector3.forward * scroll * scrollSpeed * Time.deltaTime, Space.Self);
+        _targetCamera.transform.Translate(Vector3.forward * scroll * scrollSpeed * Time.deltaTime, Space.Self);
 
         // Right-click drag for rotation
         if (Input.GetMouseButton(1))
@@ -41,19 +49,24 @@ public class CameraController : MonoBehaviour
             float rotationX = Input.GetAxis("Mouse X") * rotationSpeed;
             float rotationY = Input.GetAxis("Mouse Y") * rotationSpeed;
 
-            targetCamera.transform.Rotate(Vector3.up, rotationX, Space.World);
-            targetCamera.transform.Rotate(Vector3.right, -rotationY, Space.Self);
+            _targetCamera.transform.Rotate(Vector3.up, rotationX, Space.World);
+            _targetCamera.transform.Rotate(Vector3.right, -rotationY, Space.Self);
         }
+    }
+    
+    public void MoveTowards(Vector3 position)
+    {
+        _goalPosition = position;
     }
 
     public void SetCameraPosition(Vector3 position)
     {
-        targetCamera.transform.position = position;
+        _targetCamera.transform.position = position;
     }
 
     public void LookAt(Vector3 position)
     {
-        targetCamera.transform.LookAt(position);
+        _targetCamera.transform.LookAt(position);
     }
 
     public void DebugSomeShit() {

@@ -1,7 +1,4 @@
 using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 
 public class TileSelector : MonoBehaviour
 {
@@ -14,7 +11,7 @@ public class TileSelector : MonoBehaviour
 
     private HexGrid _grid;
 
-    private GameStateManager _gameStateManager;
+    public GameStateManager gameStateManager;
 
     void Start()
     {
@@ -37,42 +34,22 @@ public class TileSelector : MonoBehaviour
 
     void ChooseTile(int x, int y)
     { 
-        HexTile oldTile = _grid.GetHexTile(selectedX, selectedY);
         HexTile selectedTile = _grid.GetHexTile(x, y);
-        if (selectedTile != null)
-        {
-            UnchooseTile(selectedX, selectedY);
-            selectedX = x;
-            selectedY = y;
-            selectedTile.Select();
-        }
-    
-        Vector3 difference = selectedTile.Position - oldTile.Position;
-        Camera targetCamera = Camera.main;
-        // Look at tile, while maintaining the same angle
-
-         StartCoroutine(AnimateCameraShift(targetCamera.transform.position + difference, targetCamera));
-
-       
+        if (selectedTile == null) return;
+        
+        UnchooseTile(selectedX, selectedY);
+        selectedX = x;
+        selectedY = y;
+        selectedTile.Select();
+        
+        // Find new camera position
+        Vector3 offsetFromTile = new Vector3(0, 10, -10);
+        Vector3 position = selectedTile.Position + offsetFromTile;
+        var cameraController = Camera.main?.GetComponent<CameraController>();
+        cameraController?.MoveTowards(position);
        
     } 
-
-    private IEnumerator AnimateCameraShift(Vector3 targetPosition, Camera camera)
-    {
-        Vector3 startPosition = camera.transform.position;
-        float duration = cameraShiftDuration; 
-        float elapsed = 0f;
-
-        while (elapsed < duration)
-        {
-            camera.transform.position = Vector3.Lerp(startPosition, targetPosition, elapsed / duration);
-            elapsed += Time.deltaTime;
-            yield return null;
-        }
-
-        camera.transform.position = targetPosition; // Ensure the final position is set
-    }
-
+    
     void UnchooseTile(int x, int y)
     {
         HexTile selectedTile = _grid.GetHexTile(x, y);
@@ -106,7 +83,7 @@ public class TileSelector : MonoBehaviour
 
             _grid.SetTile(selectedX, selectedY, selectedTileType);
 
-            _gameStateManager.EndTurn();
+            gameStateManager.EndTurn();
         }
         else
         {

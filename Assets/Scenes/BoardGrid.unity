@@ -486,6 +486,7 @@ MonoBehaviour:
   selectedY: 19
   cameraShiftDuration: 0.15
   selectedTileType: 0
+  gameStateManager: {fileID: 712581809}
 --- !u!1 &712581807
 GameObject:
   m_ObjectHideFlags: 0
