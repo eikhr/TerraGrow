@@ -9,6 +9,7 @@ public class Itembar : MonoBehaviour
     private Camera renderCamera; // Camera to render prefab thumbnails
     private Canvas canvas; // The dynamically created Canvas
     private int selectedItemIndex = -1;
+    private Image[] borderImages; // Border images for highlighting selected item
 
     void Start()
     {
