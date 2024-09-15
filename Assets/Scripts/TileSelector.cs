@@ -81,6 +81,7 @@ public class TileSelector : MonoBehaviour
         {
             _grid.SetTile(selectedX, selectedY, selectedTileType);
 
+            Debug.Log("Space pressed");
             gameStateManager.EndTurn();
         }
         else

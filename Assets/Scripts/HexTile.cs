@@ -21,6 +21,7 @@ public class HexTile : MonoBehaviour
         Village,
         Factory,
         BigMushroom,
+        AnimalPen,
     }
     public enum TileResource
     {
@@ -116,10 +117,13 @@ public class HexTile : MonoBehaviour
     }
     
 
-    public void LevelUp(GameObject newTilePrefab, TileType newTileType)
+    public void LevelUp(TileType newTileType)
     {
+        TileType oldTileType = tileType;
+        Debug.Log("Leveling up tile at " + x + ", " + y + " from " + oldTileType + " to " + newTileType);
         if (nextLevelPrefab != null)
         {
+            GameObject newTilePrefab = nextLevelPrefab;
             GameObject newTile = Instantiate(newTilePrefab, transform.position, Quaternion.identity);
             HexTile newHexTile = newTile.GetComponent<HexTile>();
             newHexTile.Initialize(x, y);
