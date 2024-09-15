@@ -19,7 +19,8 @@ public class HexTile : MonoBehaviour
         Animals,
         Town,
         Village,
-        Factory
+        Factory,
+        BigMushroom,
     }
     public enum TileResource
     {
@@ -114,26 +115,17 @@ public class HexTile : MonoBehaviour
         return uncoveredResources.Values.All(value => value <= 0);
     }
     
-    public void TakeTurn()
-    {
-        if (HasResourcesCovered())
-        {
-            turnsUntilLevelUp--;
-            if (turnsUntilLevelUp <= 0)
-            {
-                LevelUp();
-            }
-        }
-    }
 
-    public void LevelUp()
+    public void LevelUp(GameObject newTilePrefab, TileType newTileType)
     {
         if (nextLevelPrefab != null)
         {
-            GameObject newTile = Instantiate(nextLevelPrefab, transform.position, Quaternion.identity);
+            GameObject newTile = Instantiate(newTilePrefab, transform.position, Quaternion.identity);
             HexTile newHexTile = newTile.GetComponent<HexTile>();
             newHexTile.Initialize(x, y);
+            newHexTile.tileType = newTileType;
             GetGrid().ReplaceTile(x, y, newTile);
         }
     }
+    
 }
