@@ -44,7 +44,6 @@ public class HexGrid : MonoBehaviour
         GameObject hexTile = Instantiate(hexTilePrefabs[(int)tileType], Vector3.zero, Quaternion.identity);
         hexTile.transform.SetParent(transform); // Parent it to the grid for organization
         
-        // Destroy the old tile
         ReplaceTile(x, y, hexTile);
     }
     
@@ -86,6 +85,8 @@ public class HexGrid : MonoBehaviour
         // Flip over the tiles
         for (float t = 0; t <= 1f; t += Time.deltaTime * 1.3f)
         {
+            // Always keep the tiles at the same position
+            oldTile.transform.position = newTile.transform.position;
             // Rotate along the x-axis
             oldTile.transform.rotation = Quaternion.Lerp(Quaternion.identity, new Quaternion(1, 0, 0, 0), t );
             newTile.transform.rotation = Quaternion.Lerp(new Quaternion(-1, 0, 0, 0), Quaternion.identity, t);

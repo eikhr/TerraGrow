@@ -12,6 +12,8 @@ public class TileSelector : MonoBehaviour
     private HexGrid _grid;
 
     public GameStateManager gameStateManager;
+    
+    private readonly Vector3 _cameraOffset = new Vector3(0, 10, -10);
 
     void Start()
     {
@@ -22,18 +24,16 @@ public class TileSelector : MonoBehaviour
 
         // Initialize the camera position
         Camera targetCamera = Camera.main;
-
-        Vector3 offsetFromTile = new Vector3(0, 10, -10);
-
+        
         HexTile selectedTile = _grid.GetHexTile(selectedX, selectedY);
-        targetCamera.transform.position = selectedTile.Position + offsetFromTile;
-
-
+        targetCamera.transform.position = selectedTile.Position + _cameraOffset;
     }
 
 
     void ChooseTile(int x, int y)
     { 
+        gameStateManager.SelectTile(x, y);
+        
         HexTile selectedTile = _grid.GetHexTile(x, y);
         if (selectedTile == null) return;
         
@@ -43,8 +43,7 @@ public class TileSelector : MonoBehaviour
         selectedTile.Select();
         
         // Find new camera position
-        Vector3 offsetFromTile = new Vector3(0, 10, -10);
-        Vector3 position = selectedTile.Position + offsetFromTile;
+        Vector3 position = selectedTile.Position + _cameraOffset;
         var cameraController = Camera.main?.GetComponent<CameraController>();
         cameraController?.MoveTowards(position);
        
@@ -76,12 +75,6 @@ public class TileSelector : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.D))
         {
             ChooseTile(selectedX + 1, selectedY);
-        }
-        else if (Input.GetKeyDown(KeyCode.Space))
-        {
-            _grid.SetTile(selectedX, selectedY, selectedTileType);
-
-            gameStateManager.EndTurn();
         }
         else
         {
