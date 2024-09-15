@@ -35,6 +35,7 @@ public class HexTile : MonoBehaviour
     }
     public int x;  // Grid coordinates
     public int y;
+    public bool updated = false;
     
     public int basePointRewards = 1;
     
@@ -122,15 +123,13 @@ public class HexTile : MonoBehaviour
     {
         TileType oldTileType = tileType;
         Debug.Log("Leveling up tile at " + x + ", " + y + " from " + oldTileType + " to " + newTileType);
-        if (nextLevelPrefab != null)
-        {
-            GameObject newTilePrefab = nextLevelPrefab;
-            GameObject newTile = Instantiate(newTilePrefab, transform.position, Quaternion.identity);
-            HexTile newHexTile = newTile.GetComponent<HexTile>();
-            newHexTile.Initialize(x, y);
-            newHexTile.tileType = newTileType;
-            GetGrid().ReplaceTile(x, y, newTile);
-        }
+        GameObject newTilePrefab = GetGrid().hexTilePrefabs[(int)newTileType];
+        GameObject newTile = Instantiate(newTilePrefab, transform.position, Quaternion.identity);
+        HexTile newHexTile = newTile.GetComponent<HexTile>();
+        newHexTile.Initialize(x, y);
+        newHexTile.tileType = newTileType;
+        newHexTile.updated = true;
+        GetGrid().ReplaceTile(x, y, newTile);
     }
 
     public void Die()

@@ -121,7 +121,29 @@ public class GameStateManager : MonoBehaviour
                             {
                                 tile.LevelUp(HexTile.TileType.Flowers);
                             }
-
+                            // Rule: If adjacent to Water and Trees or Forest, become Trees
+                            else if (listHasTiles(neighbours, HexTile.TileType.Water, 1) &&
+                                     (listHasTiles(neighbours, HexTile.TileType.Trees, 1) ||
+                                      listHasTiles(neighbours, HexTile.TileType.Forest, 1)))
+                            {
+                                tile.LevelUp(HexTile.TileType.Trees);
+                            }
+                            // Rule: If adjacent to Water, flowers and Animals, become Animals
+                            else if (listHasTiles(neighbours, HexTile.TileType.Water, 1) &&
+                                     listHasTiles(neighbours, HexTile.TileType.Flowers, 1) &&
+                                     listHasTiles(neighbours, HexTile.TileType.Animals, 1))
+                            {
+                                tile.LevelUp(HexTile.TileType.Animals);
+                            }
+                            // Rule: If adjacent to (MushroomBig or Mushroom) and (Forest or Mountain), become Mushroom
+                            else if ((listHasTiles(neighbours, HexTile.TileType.BigMushroom, 1) ||
+                                      listHasTiles(neighbours, HexTile.TileType.Mushroom, 1)) &&
+                                     (listHasTiles(neighbours, HexTile.TileType.Forest, 1) ||
+                                      listHasTiles(neighbours, HexTile.TileType.Mountain, 1)))
+                            {
+                                tile.LevelUp(HexTile.TileType.Mushroom);
+                            }
+                            
                             break;
 
                         case HexTile.TileType.Village:
@@ -132,7 +154,17 @@ public class GameStateManager : MonoBehaviour
                             {
                                 tile.LevelUp(HexTile.TileType.Town);
                             }
-
+                            
+                            break;
+                        
+                        case HexTile.TileType.Town:
+                            // Rule: If adjacent to Forest and Mountain, become Factory
+                            if (listHasTiles(neighbours, HexTile.TileType.Forest, 1) &&
+                                listHasTiles(neighbours, HexTile.TileType.Mountain, 1))
+                            {
+                                tile.LevelUp(HexTile.TileType.Factory);
+                            }
+                            
                             break;
 
                         case HexTile.TileType.Flowers:
@@ -170,6 +202,18 @@ public class GameStateManager : MonoBehaviour
                 }
             }
         }
+
+        for (int x = 0; x < _hexGrid.size; x++)
+        {
+            for (int y = 0; y < _hexGrid.size; y++)
+            {
+                HexTile tile = _hexGrid.GetHexTile(x, y);
+                if (tile != null)
+                {
+                    tile.updated = false;
+                }
+            }
+        }
     }
 
     private bool listHasTiles(HexTile[] tiles, HexTile.TileType tileType, int count)
@@ -177,7 +221,7 @@ public class GameStateManager : MonoBehaviour
         int tileCount = 0;
         foreach (HexTile tile in tiles)
         {
-            if (tile != null && tile.tileType != null && tile.tileType == tileType)
+            if (tile != null && !tile.updated && tile.tileType != null && tile.tileType == tileType)
             {
                 tileCount++;
             }
