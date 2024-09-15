@@ -67,6 +67,8 @@ public class GameStateManager : MonoBehaviour
         // 1 for each tile in the grid
         // 2 find the neighbours of the tile
         // 3 if succeeding the conditions, swap the tile with the upgrade
+        
+        Debug.Log("Leveling up tiles");
 
         for (int x = 0; x < _hexGrid.size; x++)
         {
@@ -155,12 +157,12 @@ public class GameStateManager : MonoBehaviour
         }
     }
 
-    private bool listHasTiles(List<HexTile> tiles, HexTile.TileType tileType, int count)
+    private bool listHasTiles(HexTile[] tiles, HexTile.TileType tileType, int count)
     {
         int tileCount = 0;
         foreach (HexTile tile in tiles)
         {
-            if (tile.tileType == tileType)
+            if (tile != null && tile.tileType == tileType)
             {
                 tileCount++;
             }
